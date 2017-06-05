@@ -6,8 +6,6 @@
 - (id)nowPlayingApplication;
 @end
 
-//id X = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteX]
-
 %hook NCNotificationNoContentView
 - (void)layoutSubviews {
 
@@ -15,15 +13,20 @@
 
   NSDictionary *dict = (__bridge NSDictionary *)(information);
 
-  if ([dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle] == nil && [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist] == nil) {
+        NSString *songTitle = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle];
+
+        NSString *artistTitle = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist];
+
+  // if ([dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle] == nil && [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist] == nil) {
+  if ((songTitle == nil) && (artistTitle == nil)) {
 
     %orig;
 
-  } else if ([dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle] != nil && [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist] != nil) {
-
-      NSString *songTitle = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle];
-
-      NSString *artistTitle = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist];
+  } else if ((songTitle != nil) && (artistTitle != nil)) {
+      //
+      // NSString *songTitle = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle];
+      //
+      // NSString *artistTitle = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist];
 
   %orig;
 
