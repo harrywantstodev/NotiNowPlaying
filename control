@@ -1,0 +1,9 @@
+Package: com.harrywantstodev.notinowplaying
+Name: NotiNowPlaying
+Depends: mobilesubstrate
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Change no notifications text to now playing info
+Maintainer: harrywantstodev
+Author: harrywantstodev
+Section: Tweaks
