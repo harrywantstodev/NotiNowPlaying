@@ -6,21 +6,29 @@
 - (id)nowPlayingApplication;
 @end
 
+//id X = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteX]
+
 %hook NCNotificationNoContentView
 - (void)layoutSubviews {
 
   MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
+
   NSDictionary *dict = (__bridge NSDictionary *)(information);
+
   if ([dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle] == nil && [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist] == nil) {
+
     %orig;
+
   } else if ([dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle] != nil && [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist] != nil) {
-    //  NSString *nowPlaying = [[[%c(SBMediaController) sharedInstance] nowPlayingApplication] bundleIdentifier];
-      NSString *songTitle = [[NSString alloc] initWithString:[dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle]];
-      NSString *artistTitle = [[NSString alloc] initWithString:[dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist]];
-      //NSString *title = [NSString stringWithFormat:@"%@\nBy: %@", songTitle, artistTitle];
+
+      NSString *songTitle = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoTitle];
+
+      NSString *artistTitle = [dict objectForKey:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtist];
 
   %orig;
+
   UILabel *NoNotifs = MSHookIvar<UILabel *>(self, "_noNotificationsLabel");
+
   NoNotifs.text = [NSString stringWithFormat:@"%@ By: %@", songTitle, artistTitle];
 }
 });
